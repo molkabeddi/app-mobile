@@ -15,7 +15,7 @@ class _AuthPageState extends State<AuthPage> {
   @override
   Widget build(BuildContext context) {
     Config().init(context);
-    String welcomeText = AppText.enText['Welcome'] ?? ' Welcome';
+    String welcomeText = AppText.enText['Welcome'] ?? 'Welcome';
 
     return Scaffold(
       body: Padding(

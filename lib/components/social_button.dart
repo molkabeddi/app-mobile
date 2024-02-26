@@ -20,11 +20,7 @@ class SocialButton extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
-            Image.asset(
-              'assets/$social.jpg',
-              width: 40,
-              height: 40,
-            ),
+            // Supprimer l'image pour ne conserver que le texte
             Text(
               social.toUpperCase(),
               style: const TextStyle(
