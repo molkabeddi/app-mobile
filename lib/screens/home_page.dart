@@ -13,41 +13,19 @@ class Homepage extends StatefulWidget {
 
 class _HomepageState extends State<Homepage> {
   List<Map<String, dynamic>> medCat = [
-    {
-      "icon": FontAwesomeIcons.userDoctor,
-      "category": "General",
-    },
-    {
-      "icon": FontAwesomeIcons.heartPulse,
-      "category": "Cardiology",
-    },
-    {
-      "icon": FontAwesomeIcons.lungs,
-      "category": "Respirations",
-    },
-    {
-      "icon": FontAwesomeIcons.hand,
-      "category": "Dermatology",
-    },
-    {
-      "icon": FontAwesomeIcons.personPregnant,
-      "category": "Gynecology",
-    },
-    {
-      "icon": FontAwesomeIcons.teeth,
-      "category": "Dental",
-    },
+    {"icon": FontAwesomeIcons.userDoctor, "category": "General"},
+    {"icon": FontAwesomeIcons.heartPulse, "category": "Cardiology"},
+    {"icon": FontAwesomeIcons.lungs, "category": "Respirations"},
+    {"icon": FontAwesomeIcons.hand, "category": "Dermatology"},
+    {"icon": FontAwesomeIcons.personPregnant, "category": "Gynecology"},
+    {"icon": FontAwesomeIcons.teeth, "category": "Dental"},
   ];
 
   @override
   Widget build(BuildContext context) {
-    // Config().init(context); // Comment out or remove this line if not needed
     return Scaffold(
       body: Padding(
-        padding: const EdgeInsets.symmetric(
-          horizontal: 15,
-          vertical: 15,
-        ),
+        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
         child: SafeArea(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
@@ -55,19 +33,21 @@ class _HomepageState extends State<Homepage> {
             children: <Widget>[
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: const <Widget>[
-                  Text(
-                    'Amanda', // Hard code the user's name here
-                    style: TextStyle(
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
+                children: <Widget>[
+                  Flexible(
+                    child: Text(
+                      'Ameni', // Hard code the user's name here
+                      style: TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
-                  CircleAvatar(
-                    radius: 30,
-                    backgroundImage: AssetImage('assets/amanda.jpg'),
-                  ),
                 ],
+              ),
+              CircleAvatar(
+                radius: 30,
+                backgroundImage: AssetImage('assets/amanda.jpg'),
               ),
               SizedBox(height: 15),
               // Use config.spaceSmall if it's defined in your config class
@@ -125,17 +105,20 @@ class _HomepageState extends State<Homepage> {
               Config.spaceSmall,
               AppointmentCard(color: Colors.blue),
               Config.spaceSmall,
-               const Text(
+              const Text(
                 'Top Doctors',
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               ),
-               // liste of top Doctors
-               Config.spaceSmall,    
-               Column(
-                children: List.generate(10,(index){
-                  return DoctorCard();
+              // List of top Doctors
+              Config.spaceSmall,
+              Column(
+                children: List.generate(10, (index) {
+                  return DoctorCard(
+                    route: 'doc_details',
+                  );
                 }),
-               )       ],
+              ),
+            ],
           ),
         ),
       ),

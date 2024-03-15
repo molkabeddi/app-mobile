@@ -1,11 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:pfa2/main_layout.dart';
+import 'package:pfa2/screens/doctor_details.dart';
 import 'package:pfa2/utils/config.dart';
 import 'package:pfa2/screens/auth_page.dart';
 
 void main() {
   runApp(const MyApp());
 }
+class Config {
+  static const double spaceMedium = 16.0;
+  static const Color primaryColor = Colors.blue;  // Définissez la couleur que vous souhaitez utiliser
+  static const OutlineInputBorder outlinedBorder = OutlineInputBorder();
+  static const OutlineInputBorder focusBorder = OutlineInputBorder();
+  static const OutlineInputBorder errorBorder = OutlineInputBorder();
+  // Ajoutez d'autres propriétés si nécessaire
+}
+
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -42,7 +52,10 @@ class MyApp extends StatelessWidget {
       // Supprimez la route par défaut '/', car 'home' est déjà défini
       routes: {
         '/':(context)=> const AuthPage() ,
-         'main': (context) => const MainLayout()
+         'main': (context) => const MainLayout(),
+          'doc_details': (context) => const DoctorDetails()
+
+
       },
      
     );

@@ -28,7 +28,7 @@ class _AppointmentCardState extends State<AppointmentCard> {
               Row(
                 children: [
                   CircleAvatar(
-                    backgroundImage: AssetImage('assets/doctor2.webp'),
+                    backgroundImage: AssetImage('assets/doctor1.jpg'),
                   ),
                   SizedBox(width: 10),
                   Column(
@@ -36,7 +36,7 @@ class _AppointmentCardState extends State<AppointmentCard> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Text(
-                        'Dr. Richard Tan',
+                        'Dr. Ahmed ben amor',
                         style: TextStyle(color: Colors.white),
                       ),
                       SizedBox(height: 2),

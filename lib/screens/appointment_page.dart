@@ -16,25 +16,25 @@ class _AppointmentpageState extends State<Appointmentpage> {
 
   List<dynamic> schedules = [
     {
-      "doctor_name": "Richard Tan",
-      "doctor_profile": "assets/doctor_2.jpg",
+      "doctor_name": "Ahmed ben amor ",
+      "doctor_profile": "assets/doctor1.jpg",
       "category": "Dental",
       "status": FilterStatus.upcoming,
     },
     {
-      "doctor_name": "Max Lim",
+      "doctor_name": "selem bechir",
       "doctor_profile": "assets/doctor_3.jpg",
       "category": "Cardiology",
       "status": FilterStatus.complete,
     },
     {
-      "doctor_name": "Jane Tan",
+      "doctor_name": "henda khmiri ",
       "doctor_profile": "assets/doctor_4.jpg",
       "category": "Respiration",
       "status": FilterStatus.complete,
     },
     {
-      "doctor_name": "Jenny Song",
+      "doctor_name": "salma karray",
       "doctor_profile": "assets/doctor_5.jpg",
       "category": "General",
       "status": FilterStatus.cancel,

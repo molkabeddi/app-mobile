@@ -1,24 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:pfa2/utils/config.dart';
 
-class DoctorCard extends StatefulWidget {
-  const DoctorCard({Key? key}) : super(key: key);
+class DoctorCard extends StatelessWidget {
+  const DoctorCard({Key? key, required this.route}) : super(key: key);
+  final String route;
 
-  @override
-  State<DoctorCard> createState() => _DoctorCardState();
-}
-
-class _DoctorCardState extends State<DoctorCard> {
   @override
   Widget build(BuildContext context) {
     Config().init(context);
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
       height: 150,
-      child: GestureDetector(
-        child: Card(
-          elevation: 5,
-          color: Colors.white,
+      child: Card(
+        elevation: 5,
+        color: Colors.white,
+        child: InkWell(
+          onTap: () {
+            Navigator.of(context).pushNamed(route);
+          },
           child: Row(
             children: [
               SizedBox(
@@ -32,7 +31,7 @@ class _DoctorCardState extends State<DoctorCard> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Text(
-                        "Dr Richard Tan",
+                        "Dr Ahmed ben amor",
                         style: const TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
@@ -78,9 +77,6 @@ class _DoctorCardState extends State<DoctorCard> {
             ],
           ),
         ),
-        onTap: () {
-          // Handle onTap event
-        },
       ),
     );
   }
