@@ -42,7 +42,9 @@ class _DoctorDetailsState extends State<DoctorDetails> {
             Padding(
               padding: const EdgeInsets.all(20),
               child: ElevatedButton(
-                onPressed: () {}, // Placeholder pour l'action du bouton
+                onPressed: () {
+                  Navigator.of(context).pushNamed('booking_page');
+                },
                 child: const Text('Book Appointment'),
               ),
             ),

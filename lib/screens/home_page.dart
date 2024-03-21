@@ -1,8 +1,10 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:pfa2/components/appointment_card.dart';
 import 'package:pfa2/components/doctor_card.dart';
-import 'package:pfa2/utils/config.dart';
+import 'package:pfa2/providers/dio_provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Homepage extends StatefulWidget {
   const Homepage({Key? key}) : super(key: key);
@@ -12,6 +14,7 @@ class Homepage extends StatefulWidget {
 }
 
 class _HomepageState extends State<Homepage> {
+  Map<String, dynamic>? user;
   List<Map<String, dynamic>> medCat = [
     {"icon": FontAwesomeIcons.userDoctor, "category": "General"},
     {"icon": FontAwesomeIcons.heartPulse, "category": "Cardiology"},
@@ -20,6 +23,27 @@ class _HomepageState extends State<Homepage> {
     {"icon": FontAwesomeIcons.personPregnant, "category": "Gynecology"},
     {"icon": FontAwesomeIcons.teeth, "category": "Dental"},
   ];
+
+  @override
+  void initState() {
+    super.initState();
+    getData();
+  }
+
+  Future<void> getData() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final String? token = prefs.getString('token');
+    if (token != null && token.isNotEmpty) {
+      final response = await DioProvider().getUser(token);
+      if (response != null) {
+        setState(() {
+          user = json.decode(response);
+        });
+      }
+    }
+  }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -36,8 +60,8 @@ class _HomepageState extends State<Homepage> {
                 children: <Widget>[
                   Flexible(
                     child: Text(
-                      'Ameni', // Hard code the user's name here
-                      style: TextStyle(
+                      user != null ? user!['name'] : 'Ameni',
+                      style: const TextStyle(
                         fontSize: 24,
                         fontWeight: FontWeight.bold,
                       ),
@@ -49,27 +73,23 @@ class _HomepageState extends State<Homepage> {
                 radius: 30,
                 backgroundImage: AssetImage('assets/amanda.jpg'),
               ),
-              SizedBox(height: 15),
-              // Use config.spaceSmall if it's defined in your config class
-              // Otherwise, you can use SizedBox with a specific height
-              SizedBox(height: 8),
-              // Display category name
+              const SizedBox(height: 15),
+              const SizedBox(height: 8),
               const Text(
-                'category', // Hard code the category name here
+                'category',
                 style: TextStyle(
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              // Display the list of medical categories
               SizedBox(
-                height: Config.heightSize * 0.05,
+                height: 100,
                 child: ListView(
                   scrollDirection: Axis.horizontal,
                   children: List<Widget>.generate(medCat.length, (index) {
                     return Card(
                       margin: const EdgeInsets.only(right: 20),
-                      color: Config.primaryColor,
+                      color: Colors.blue,
                       child: Padding(
                         padding: const EdgeInsets.symmetric(
                           horizontal: 15,
@@ -89,7 +109,6 @@ class _HomepageState extends State<Homepage> {
                               medCat[index]['category'],
                               style: const TextStyle(color: Colors.white),
                             ),
-                            // Add other widgets related to medical categories here
                           ],
                         ),
                       ),
@@ -97,20 +116,19 @@ class _HomepageState extends State<Homepage> {
                   }),
                 ),
               ),
-              Config.spaceSmall,
+              const SizedBox(height: 8),
               const Text(
                 'Appointment Today',
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               ),
-              Config.spaceSmall,
+              const SizedBox(height: 8),
               AppointmentCard(color: Colors.blue),
-              Config.spaceSmall,
+              const SizedBox(height: 8),
               const Text(
                 'Top Doctors',
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               ),
-              // List of top Doctors
-              Config.spaceSmall,
+              const SizedBox(height: 8),
               Column(
                 children: List.generate(10, (index) {
                   return DoctorCard(

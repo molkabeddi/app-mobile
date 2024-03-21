@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:pfa2/components/button.dart';
-import 'package:pfa2/utils/config.dart';
+import 'package:pfa2/providers/dio_provider.dart';
+import 'package:provider/provider.dart';
+import 'package:pfa2/models/auth_model.dart'; 
+import 'package:pfa2/utils/config.dart'; // Importez Config depuis le bon emplacement
+
+// Import Provider package
 
 class LoginForm extends StatefulWidget {
   const LoginForm({Key? key}) : super(key: key);
@@ -55,14 +60,27 @@ class _LoginFormState extends State<LoginForm> {
                 icon: obsecurePass
                     ? const Icon(Icons.visibility_off_outlined, color: Colors.black38)
                     : const Icon(Icons.visibility_outlined, color: Config.primaryColor),
-
               ),
             ),
           ),
           Config.spaceSmall,
-          Button(width: double.infinity, title: 'Sign In', onPressed: () {
-            Navigator.of(context).pushNamed('main');
-          }, disable: false,)
+          Consumer<AuthModel>(
+            builder: (context, auth, child) {
+              return Button(
+                width: double.infinity,
+                title: 'Sign In',
+                onPressed: () async {
+                  //login here
+                  final token = await DioProvider().getToken(_emailController.text, _passController.text); 
+                  if (token != null) {
+                    auth.loginSuccess(); // Add null-aware operator
+                    Navigator.of(context).pushNamed('main');
+                  }
+                },
+                disable: false,
+              );
+            },
+          ),
         ],
       ),
     );

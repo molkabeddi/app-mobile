@@ -1,84 +1,123 @@
-import 'package:flutter/material.dart';
 import 'package:pfa2/components/login_form.dart';
-import 'package:pfa2/utils/config.dart';
-import 'package:pfa2/utils/text.dart';
+import 'package:pfa2/components/sign_up_form.dart';
 import 'package:pfa2/components/social_button.dart';
+import 'package:pfa2/utils/text.dart';
+import 'package:flutter/material.dart';
+
+import '../utils/config.dart';
 
 class AuthPage extends StatefulWidget {
   const AuthPage({Key? key}) : super(key: key);
 
   @override
-  _AuthPageState createState() => _AuthPageState();
+  State<AuthPage> createState() => _AuthPageState();
 }
 
 class _AuthPageState extends State<AuthPage> {
+  bool isSignIn = true;
   @override
   Widget build(BuildContext context) {
     Config().init(context);
-    String welcomeText = AppText.enText['Welcome'] ?? 'Welcome';
-
+    //build login text field
     return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.symmetric(
-          horizontal: 15,
-          vertical: 15,
-        ),
-        child: SafeArea(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Text(
-                welcomeText,
-                style: const TextStyle(
-                  fontSize: 36,
-                  fontWeight: FontWeight.bold,
-                ),
+        body: Padding(
+      padding: const EdgeInsets.symmetric(
+        horizontal: 15,
+        vertical: 15,
+      ),
+      child: SafeArea(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Text(
+              AppText.enText['welcome_text']!,
+              style: const TextStyle(
+                fontSize: 36,
+                fontWeight: FontWeight.bold,
               ),
-              Config.spaceSmall,
-              Text(
-                AppText.enText['signIn_text']!,
-                style: const TextStyle(
+            ),
+            Config.spaceSmall,
+            Text(
+              isSignIn
+                  ? AppText.enText['signIn_text']!
+                  : AppText.enText['register_text']!,
+              style: const TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            Config.spaceSmall,
+            isSignIn ? LoginForm() : SignUpForm(),
+            Config.spaceSmall,
+            isSignIn
+                ? Center(
+                    child: TextButton(
+                      onPressed: () {},
+                      child: Text(
+                        AppText.enText['forgot-password']!,
+                        style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black,
+                        ),
+                      ),
+                    ),
+                  )
+                : Container(),
+            const Spacer(),
+            Center(
+              child: Text(
+                AppText.enText['social-login']!,
+                style: TextStyle(
                   fontSize: 16,
-                  fontWeight: FontWeight.bold,
+                  fontWeight: FontWeight.normal,
+                  color: Colors.grey.shade500,
                 ),
               ),
-              Config.spaceSmall,
-              // Utilisation de `const` pour déclarer un widget constant
-              const LoginForm(),
-              Config.spaceSmall,
-              Text(
-                AppText.enText['forgot-password']!,
-                style: const TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              // Ajout d'un espace flexible (Spacer) pour pousser le texte vers le bas
-              const Spacer(),
-              Center(
-                child: Text(
-                  AppText.enText['social-login']!,
-                  style: const TextStyle(
+            ),
+            Config.spaceSmall,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: const <Widget>[
+                SocialButton(social: 'google'),
+                SocialButton(social: 'facebook'),
+              ],
+            ),
+            Config.spaceSmall,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Text(
+                  isSignIn
+                      ? AppText.enText['signUp_text']!
+                      : AppText.enText['registered_text']!,
+                  style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.normal,
-                    color: Colors.blueGrey, // Correction du nom de la couleur
+                    color: Colors.grey.shade500,
                   ),
                 ),
-              ),
-              Config.spaceSmall,
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: const <Widget>[
-                  SocialButton(social: 'google'),
-                  SocialButton(social: 'facebook'),
-                ],
-              ),
-              Config.spaceSmall, // Espace supplémentaire ajouté ici
-            ],
-          ),
+                TextButton(
+                  onPressed: () {
+                    setState(() {
+                      isSignIn = !isSignIn;
+                    });
+                  },
+                  child: Text(
+                    isSignIn ? 'Sign Up' : 'Sign In',
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                    ),
+                  ),
+                )
+              ],
+            )
+          ],
         ),
       ),
-    );
+    ));
   }
 }
