@@ -88,13 +88,11 @@ class _SignUpFormState extends State<SignUpForm> {
                   // If registration is successful, proceed to login
                   if (userRegistration) {
                     print("done");
-                    final dioProvider = DioProvider(); // Initialize DioProvider instance
-                    final token = await dioProvider.getToken(_emailController.text, _passController.text);
-                    if (token) {
-                      auth.loginSuccess(); // Update login status
-                      // Redirect to main page
-                      Navigator.of(context).pushNamed('main');
-                    }
+                    auth.loginSuccess(); // Update login status
+                    // Redirect to main page
+                    Navigator.of(context).pushNamed('main');
+                    //  final dioProvider = DioProvider(); // Initialize DioProvider instance
+                    //final token = await dioProvider.getToken(_emailController.text, _passController.text);
                   } else {
                     print('Register not successful'); // Avoid 'print' calls in production code
                   }
