@@ -1,29 +1,19 @@
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
-import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 class DioProvider {
   String host = "http://192.168.74.86";
   String port = "8000";
   late Dio dio;
-  _setHeaders() => {
-        'Content-type': 'application/json',
-        'Accept': 'application/json',
-        "Connection": "Keep-Alive",
-      };
-  postData(data, apiUrl) async {
-    return await http.post(Uri.parse(apiUrl), body: jsonEncode(data), headers: _setHeaders());
-  }
-
   Future<bool> getToken(String email, String password) async {
     try {
-      http.Response response = await postData({'email': email, 'password': password}, host + ':' + port + '/api/login');
-      if (response.statusCode == 200 && response.body != '') {
-        var jsondata = jsonDecode(response.body.toString());
+      var response = await Dio().post(host + ':' + port + '/api/login', data: {'email': email, 'password': password});
+      print(response.data);
+      if (response.statusCode == 200 && response.data != '') {
         final SharedPreferences prefs = await SharedPreferences.getInstance();
-        await prefs.setString('token', jsondata['token']);
+        await prefs.setString('token', response.data['token']);
         return true;
       } else {
         return false;
@@ -46,17 +36,20 @@ class DioProvider {
   }
 
   Future<bool> registerUser(String username, String email, String password) async {
-    try {
-      http.Response user =
-          await postData({'name': username, 'email': email, 'password': password}, host + ':' + port + '/api/register');
+    BaseOptions options =
+        new BaseOptions(receiveDataWhenStatusError: true, connectTimeout: 100 * 1000, receiveTimeout: 60 * 1000);
 
-      if (user.statusCode == 200 && user.body != '') {
+    dio = Dio(options);
+
+    try {
+      var user =
+          await dio.post(host + ':' + port + '/api/register', data: {'name': username, 'email': email, 'password': password});
+      if (user.statusCode == 200 && user.data != '') {
         return true;
       } else {
         return false;
       }
     } catch (error) {
-      print(error.toString());
       return false;
     }
   }
