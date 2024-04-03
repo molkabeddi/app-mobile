@@ -6,6 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class DioProvider {
   String host = "http://192.168.74.86";
   String port = "8000";
+  late Dio dio;
   Future<bool> getToken(String email, String password) async {
     try {
       var response = await Dio().post(host + ':' + port + '/api/login', data: {'email': email, 'password': password});
@@ -35,9 +36,13 @@ class DioProvider {
   }
 
   Future<bool> registerUser(String username, String email, String password) async {
+    BaseOptions options = new BaseOptions(receiveDataWhenStatusError: true, connectTimeout: 5 * 1000, receiveTimeout: 60 * 1000);
+
+    dio = Dio(options);
+
     try {
       var user =
-          await Dio().post(host + ':' + port + '/api/register', data: {'name': username, 'email': email, 'password': password});
+          await dio.post(host + ':' + port + '/api/register', data: {'name': username, 'email': email, 'password': password});
       if (user.statusCode == 200 && user.data != '') {
         return true;
       } else {
