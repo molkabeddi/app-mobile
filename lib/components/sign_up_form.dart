@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:pfa2/components/button.dart';
+import 'package:pfa2/models/auth_model.dart';
 import 'package:pfa2/providers/dio_provider.dart';
-import 'package:provider/provider.dart';
-import 'package:pfa2/models/auth_model.dart'; 
-import 'package:pfa2/main.dart' as main;
 import 'package:pfa2/utils/config.dart' as config;
+import 'package:provider/provider.dart';
 
 class SignUpForm extends StatefulWidget {
   const SignUpForm({Key? key}) : super(key: key);
@@ -19,7 +18,7 @@ class _SignUpFormState extends State<SignUpForm> {
   final _emailController = TextEditingController();
   final _passController = TextEditingController();
   bool obsecurePass = true;
-  
+
   @override
   Widget build(BuildContext context) {
     return Form(
@@ -83,23 +82,18 @@ class _SignUpFormState extends State<SignUpForm> {
                 width: double.infinity,
                 title: 'Sign Up',
                 onPressed: () async {
-                  final userRegistration = await DioProvider().registerUser(
-                    _nameController.text,
-                    _emailController.text,
-                    _passController.text
-                  );
+                  final userRegistration =
+                      await DioProvider().registerUser(_nameController.text, _emailController.text, _passController.text);
 
                   // If registration is successful, proceed to login
                   if (userRegistration) {
+                    print("done");
                     final dioProvider = DioProvider(); // Initialize DioProvider instance
-                    final token = await dioProvider.getToken(
-                      _emailController.text,
-                      _passController.text
-                    );
+                    final token = await dioProvider.getToken(_emailController.text, _passController.text);
                     if (token) {
                       auth.loginSuccess(); // Update login status
                       // Redirect to main page
-                      main.MyApp.navigatorKey.currentState!.pushNamed('main'); // Utilisation de l'alias main
+                      Navigator.of(context).pushNamed('main');
                     }
                   } else {
                     print('Register not successful'); // Avoid 'print' calls in production code
