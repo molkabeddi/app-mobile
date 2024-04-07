@@ -1,8 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:pfa2/models/doctor.dart';
+
+const double spaceMedium = 16.0;
+const double spaceSmall = 8.0;
+const double widthSize = 300.0;
 
 class DoctorDetails extends StatefulWidget {
-  const DoctorDetails({Key? key}) : super(key: key);
+  final Doctor doctor;
+  const DoctorDetails({Key? key, required this.doctor}) : super(key: key);
 
   @override
   _DoctorDetailsState createState() => _DoctorDetailsState();
@@ -36,8 +42,12 @@ class _DoctorDetailsState extends State<DoctorDetails> {
       body: SafeArea(
         child: Column(
           children: <Widget>[
-            const AboutDoctor(),
-            const DetailBody(),
+            AboutDoctor(
+              doctor: widget.doctor,
+            ),
+            DetailBody(
+              doctor: widget.doctor,
+            ),
             const Spacer(), // Ajout de Spacer pour pousser le bouton en bas
             Padding(
               padding: const EdgeInsets.all(20),
@@ -56,7 +66,8 @@ class _DoctorDetailsState extends State<DoctorDetails> {
 }
 
 class AboutDoctor extends StatelessWidget {
-  const AboutDoctor({Key? key}) : super(key: key);
+  final Doctor doctor;
+  const AboutDoctor({Key? key, required this.doctor}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -66,23 +77,24 @@ class AboutDoctor extends StatelessWidget {
         children: <Widget>[
           CircleAvatar(
             radius: 65.0,
-            backgroundImage: AssetImage('assets/doctor1.jpg'),
+            backgroundImage: NetworkImage(doctor.image),
             backgroundColor: Colors.white,
           ),
-          const SizedBox(height: Config.spaceMedium),
-          const Text(
-            'Dr Ahmed ben amor ',
+          const SizedBox(height: spaceMedium),
+          Text(
+            '${doctor.full_name}',
             style: TextStyle(
               color: Colors.black,
               fontSize: 24.0,
               fontWeight: FontWeight.bold,
             ),
           ),
-          const SizedBox(height: Config.spaceSmall),
-          SizedBox(
-            width: Config.widthSize * 0.75,
-            child: const Text(
-              'MBBS (International Medical University, Malaysia), MRCP (Royal College of Physicians)',
+          SizedBox(height: spaceSmall),
+          Container(
+            width: widthSize * 0.75,
+            child: Text(
+              textAlign: TextAlign.center,
+              '${doctor.title}',
               style: TextStyle(
                 color: Colors.grey,
                 fontSize: 15,
@@ -95,14 +107,9 @@ class AboutDoctor extends StatelessWidget {
   }
 }
 
-class Config {
-  static const double spaceMedium = 16.0;
-  static const double spaceSmall = 8.0;
-  static const double widthSize = 300.0;
-}
-
 class DetailBody extends StatelessWidget {
-  const DetailBody({Key? key}) : super(key: key);
+  final Doctor doctor;
+  const DetailBody({Key? key, required this.doctor}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -112,8 +119,10 @@ class DetailBody extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
-          const SizedBox(height: Config.spaceSmall),
-          const DoctorInfo(),
+          const SizedBox(height: spaceSmall),
+          DoctorInfo(
+            doctor: doctor,
+          ),
           const SizedBox(height: 20), // Ajout d'un espace supplémentaire
           const Text(
             'About Doctor',
@@ -123,8 +132,8 @@ class DetailBody extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 10), // Espacement entre les deux textes
-          const Text(
-            'Dr Ahmed ben amor has 10 years of experience in the medical field. He is highly skilled and dedicated to providing the best care for his patients.',
+          Text(
+            "${doctor.description}",
             style: TextStyle(
               fontSize: 16,
             ),
@@ -135,17 +144,17 @@ class DetailBody extends StatelessWidget {
   }
 }
 
-
 class DoctorInfo extends StatelessWidget {
-  const DoctorInfo({Key? key}) : super(key: key);
+  final Doctor doctor;
+  const DoctorInfo({Key? key, required this.doctor}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Row(
-      children: const <Widget>[
-        InfoCard(label: 'Patients', value: '109'),
-        InfoCard(label: 'Experiences', value: '10 years'),
-        InfoCard(label: 'Rating', value: '4.6'),
+      children: <Widget>[
+        InfoCard(label: 'Patients', value: "${doctor.patients}"),
+        InfoCard(label: 'Experiences', value: '${doctor.experiences} years'),
+        InfoCard(label: 'Rating', value: '${doctor.rating}'),
       ],
     );
   }

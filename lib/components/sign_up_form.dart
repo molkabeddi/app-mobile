@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:pfa2/components/button.dart';
-import 'package:pfa2/models/auth_model.dart';
-import 'package:pfa2/providers/dio_provider.dart';
+import 'package:pfa2/components/snack_bar.dart';
+import 'package:pfa2/models/snack_bar_types.dart';
+import 'package:pfa2/providers/auth_service.dart';
 import 'package:pfa2/utils/config.dart' as config;
-import 'package:provider/provider.dart';
 
 class SignUpForm extends StatefulWidget {
   const SignUpForm({Key? key}) : super(key: key);
@@ -18,6 +18,7 @@ class _SignUpFormState extends State<SignUpForm> {
   final _emailController = TextEditingController();
   final _passController = TextEditingController();
   bool obsecurePass = true;
+  bool loading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -76,31 +77,38 @@ class _SignUpFormState extends State<SignUpForm> {
             ),
           ),
           config.Config.spaceSmall, // Utilisation de l'alias config
-          Consumer<AuthModel>(
-            builder: (context, auth, child) {
-              return Button(
-                width: double.infinity,
-                title: 'Sign Up',
-                onPressed: () async {
-                  final userRegistration =
-                      await DioProvider().registerUser(_nameController.text, _emailController.text, _passController.text);
+          loading
+              ? Center(
+                  child: CircularProgressIndicator(),
+                )
+              : Button(
+                  width: double.infinity,
+                  title: 'Sign Up',
+                  onPressed: () async {
+                    setState(() {
+                      loading = true;
+                    });
+                    final userRegistration =
+                        await AuthServices().register(_nameController.text, _emailController.text, _passController.text);
 
-                  // If registration is successful, proceed to login
-                  if (userRegistration) {
-                    print("done");
-                    auth.loginSuccess(); // Update login status
-                    // Redirect to main page
-                    Navigator.of(context).pushNamed('main');
-                    //  final dioProvider = DioProvider(); // Initialize DioProvider instance
-                    //final token = await dioProvider.getToken(_emailController.text, _passController.text);
-                  } else {
-                    print('Register not successful'); // Avoid 'print' calls in production code
-                  }
-                },
-                disable: false,
-              );
-            },
-          ),
+                    // If registration is successful, proceed to login
+                    if (userRegistration) {
+                      Navigator.of(context).pushNamed('main');
+                    } else {
+                      SnackBars(
+                              label: "Email already exists",
+                              type: SnackBarsTypes.alert,
+                              onTap: () {},
+                              actionLabel: "Close",
+                              context: context)
+                          .showSnackBar();
+                    }
+                    setState(() {
+                      loading = false;
+                    });
+                  },
+                  disable: false,
+                )
         ],
       ),
     );

@@ -1,11 +1,10 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:pfa2/components/appointment_card.dart';
 import 'package:pfa2/components/doctor_card.dart';
-import 'package:pfa2/providers/dio_provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+
+import '../models/doctor.dart';
 
 class Homepage extends StatefulWidget {
   const Homepage({Key? key}) : super(key: key);
@@ -15,7 +14,7 @@ class Homepage extends StatefulWidget {
 }
 
 class _HomepageState extends State<Homepage> {
-  Map<String, dynamic>? user;
+  var user = GetStorage().read("user");
   List<Map<String, dynamic>> medCat = [
     {"icon": FontAwesomeIcons.userDoctor, "category": "General"},
     {"icon": FontAwesomeIcons.heartPulse, "category": "Cardiology"},
@@ -28,20 +27,6 @@ class _HomepageState extends State<Homepage> {
   @override
   void initState() {
     super.initState();
-    getData();
-  }
-
-  Future<void> getData() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final String? token = prefs.getString('token');
-    if (token != null && token.isNotEmpty) {
-      final response = await DioProvider().getUser(token);
-      if (response != null) {
-        setState(() {
-          user = json.decode(response);
-        });
-      }
-    }
   }
 
   @override
@@ -60,7 +45,7 @@ class _HomepageState extends State<Homepage> {
                   children: <Widget>[
                     Flexible(
                       child: Text(
-                        user != null ? user!['name'] : 'Ameni',
+                        "Hello ${user!['name']}",
                         style: const TextStyle(
                           fontSize: 24,
                           fontWeight: FontWeight.bold,
@@ -70,8 +55,13 @@ class _HomepageState extends State<Homepage> {
                   ],
                 ),
                 CircleAvatar(
-                  radius: 30,
-                  backgroundImage: AssetImage('assets/amanda.jpg'),
+                  radius: 32,
+                  backgroundColor: Colors.green,
+                  child: CircleAvatar(
+                    backgroundColor: Colors.white,
+                    radius: 30,
+                    backgroundImage: AssetImage('assets/img.png'),
+                  ),
                 ),
                 const SizedBox(height: 15),
                 const SizedBox(height: 8),
@@ -131,9 +121,9 @@ class _HomepageState extends State<Homepage> {
                 const SizedBox(height: 8),
                 SingleChildScrollView(
                   child: Column(
-                    children: List.generate(100, (index) {
+                    children: List.generate(doctors.length, (index) {
                       return DoctorCard(
-                        route: 'doc_details',
+                        doctor: doctors[index],
                       );
                     }),
                   ),

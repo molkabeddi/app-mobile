@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:pfa2/components/button.dart';
-import 'package:pfa2/models/auth_model.dart';
-import 'package:pfa2/providers/dio_provider.dart';
+import 'package:pfa2/components/snack_bar.dart';
+import 'package:pfa2/models/snack_bar_types.dart';
+import 'package:pfa2/providers/auth_service.dart';
 import 'package:pfa2/utils/config.dart'; // Importez Config depuis le bon emplacement
-import 'package:provider/provider.dart';
 
 // Import Provider package
 
@@ -15,6 +15,7 @@ class LoginForm extends StatefulWidget {
 }
 
 class _LoginFormState extends State<LoginForm> {
+  bool loading = false;
   final _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
   final _passController = TextEditingController();
@@ -64,22 +65,36 @@ class _LoginFormState extends State<LoginForm> {
             ),
           ),
           Config.spaceSmall,
-          Consumer<AuthModel>(
-            builder: (context, auth, child) {
-              return Button(
-                width: double.infinity,
-                title: 'Sign In',
-                onPressed: () async {
-                  //login here
-                  final token = await DioProvider().getToken(_emailController.text, _passController.text);
-                  if (token) {
-                    Navigator.of(context).pushNamed('main');
-                  }
-                },
-                disable: false,
-              );
-            },
-          ),
+          loading
+              ? Center(
+                  child: CircularProgressIndicator(),
+                )
+              : Button(
+                  width: double.infinity,
+                  title: 'Sign In',
+                  onPressed: () async {
+                    setState(() {
+                      loading = true;
+                    });
+                    //login here
+                    final token = await AuthServices().login(_emailController.text, _passController.text);
+                    if (token) {
+                      Navigator.of(context).pushNamed('/main');
+                    } else {
+                      SnackBars(
+                              label: "Wrong cridentials",
+                              type: SnackBarsTypes.alert,
+                              onTap: () {},
+                              actionLabel: "Close",
+                              context: context)
+                          .showSnackBar();
+                      setState(() {
+                        loading = false;
+                      });
+                    }
+                  },
+                  disable: false,
+                )
         ],
       ),
     );

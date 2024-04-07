@@ -1,11 +1,8 @@
-
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:pfa2/screens/home_page.dart';
-
-
 import 'package:pfa2/screens/appointment_page.dart';
-
+import 'package:pfa2/screens/home_page.dart';
+import 'package:pfa2/screens/profile_screen.dart';
 
 class MainLayout extends StatefulWidget {
   const MainLayout({Key? key}) : super(key: key);
@@ -29,9 +26,10 @@ class _MainLayoutState extends State<MainLayout> {
           });
         }),
         children: <Widget>[
-          const Homepage(),
-          // FavPage(),
-          const Appointmentpage(),
+          Homepage(),
+          Container(),
+          Appointmentpage(),
+          ProfileScreen(),
           // ProfilePage(),
         ],
       ),
