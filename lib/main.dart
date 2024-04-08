@@ -3,7 +3,6 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:pfa2/main_layout.dart';
 import 'package:pfa2/screens/auth_page.dart';
-import 'package:pfa2/screens/booking_page.dart';
 import 'package:pfa2/screens/splash_screen.dart';
 import 'package:pfa2/screens/success.booked.dart';
 
@@ -59,7 +58,6 @@ class MyApp extends StatelessWidget {
         '/': (context) => const SplashScreen(),
         '/auth': (context) => const AuthPage(),
         '/main': (context) => const MainLayout(),
-        'booking_page': (context) => const BookingPage(),
         'success_booking': (context) => const AppointmentBooked(),
       },
     );

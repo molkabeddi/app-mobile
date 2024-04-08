@@ -46,6 +46,7 @@ dependencies:
   get_storage: ^2.1.1
   get: ^4.6.6
   toast: ^0.3.0
+  intl: ^0.19.0
 
 dev_dependencies:
   flutter_test:
@@ -75,6 +76,7 @@ flutter:
      - assets/doctor1.jpg
      - assets/amanda.jpg
      - assets/img.png
+     - assets/success.json
 
      
 

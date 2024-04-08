@@ -93,7 +93,7 @@ class _SignUpFormState extends State<SignUpForm> {
 
                     // If registration is successful, proceed to login
                     if (userRegistration) {
-                      Navigator.of(context).pushNamed('main');
+                      Navigator.of(context).pushNamed('/main');
                     } else {
                       SnackBars(
                               label: "Email already exists",

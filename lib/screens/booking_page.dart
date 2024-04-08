@@ -1,21 +1,29 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:table_calendar/table_calendar.dart';
-import 'package:pfa2/components/custom_appbar.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:get/get_navigation/get_navigation.dart';
+import 'package:intl/intl.dart';
 import 'package:pfa2/components/button.dart'; // Ajoutez l'import pour le composant Button si nécessaire
+import 'package:pfa2/components/custom_appbar.dart';
+import 'package:pfa2/models/doctor.dart';
+import 'package:pfa2/providers/appointements_services.dart';
+import 'package:pfa2/screens/success.booked.dart';
+import 'package:table_calendar/table_calendar.dart';
 
 class BookingPage extends StatefulWidget {
-  const BookingPage({Key? key}) : super(key: key);
+  final Doctor doctor;
+  const BookingPage({Key? key, required this.doctor}) : super(key: key);
 
   @override
   State<BookingPage> createState() => _BookingPageState();
 }
 
 class _BookingPageState extends State<BookingPage> {
+  bool loading = false;
   // Déclaration des variables
   CalendarFormat _format = CalendarFormat.month;
   DateTime _focusDay = DateTime.now();
   DateTime _currentDay = DateTime.now();
+  DateTime test = DateTime.now();
   int? _currentIndex;
   bool _isWeekend = false;
   bool _dateSelected = false;
@@ -108,8 +116,25 @@ class _BookingPageState extends State<BookingPage> {
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 80),
               child: Button(
                 width: double.infinity,
-                title: 'Make Appointment',
-                onPressed: () {},
+                title: 'Make Appointement',
+                onPressed: () async {
+                  setState(() {
+                    _currentDay = _currentDay.subtract(Duration(hours: _currentDay.hour));
+                    _currentDay = _currentDay.add(Duration(hours: _currentIndex! + 9));
+
+                    loading = true;
+                  });
+                  print(_currentDay);
+                  var data = await AppointementsServices.add_appointement(
+                      DateFormat("yyyy/MM/dd HH:mm").format(_currentDay), widget.doctor.id);
+                  setState(() {
+                    loading = false;
+                  });
+
+                  if (data) {
+                    Get.to(AppointmentBooked());
+                  } else {}
+                },
                 disable: _timeSelected && _dateSelected ? false : true,
               ),
             ),

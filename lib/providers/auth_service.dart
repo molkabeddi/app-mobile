@@ -37,6 +37,7 @@ class AuthServices {
     try {
       var data =
           await dio.post(host + ':' + port + '/api/register', data: {'name': username, 'email': email, 'password': password});
+     print(data.data);
       if (data.statusCode == 200 && data.data != '') {
         User user = User.fromJson(data.data['user']);
         saveUserLocally(user);
@@ -45,6 +46,7 @@ class AuthServices {
         return false;
       }
     } catch (error) {
+      print(error.toString());
       return false;
     }
   }

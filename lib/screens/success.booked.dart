@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:pfa2/components/button.dart';
+
 class AppointmentBooked extends StatelessWidget {
   const AppointmentBooked({Key? key}) : super(key: key);
 
@@ -33,7 +34,7 @@ class AppointmentBooked extends StatelessWidget {
               child: Button(
                 width: double.infinity,
                 title: 'Back to Home Page',
-                onPressed: () => Navigator.of(context).pushNamed('main'),
+                onPressed: () => Navigator.of(context).pushNamedAndRemoveUntil('/main', (Route<dynamic> route) => false),
                 disable: false,
               ),
             )

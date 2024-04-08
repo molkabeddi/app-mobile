@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:get/get.dart';
 import 'package:pfa2/models/doctor.dart';
+import 'package:pfa2/screens/booking_page.dart';
 
 const double spaceMedium = 16.0;
 const double spaceSmall = 8.0;
@@ -53,7 +55,9 @@ class _DoctorDetailsState extends State<DoctorDetails> {
               padding: const EdgeInsets.all(20),
               child: ElevatedButton(
                 onPressed: () {
-                  Navigator.of(context).pushNamed('booking_page');
+                  Get.to(BookingPage(
+                    doctor: widget.doctor,
+                  ));
                 },
                 child: const Text('Book Appointment'),
               ),
