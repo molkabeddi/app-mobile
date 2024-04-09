@@ -1,5 +1,8 @@
+import 'dart:ui';
+
 import 'package:dio/dio.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:pfa2/models/appointement.dart';
 
 class AppointementsServices {
   static String host = "http://192.168.74.86";
@@ -11,11 +14,9 @@ class AppointementsServices {
         new BaseOptions(receiveDataWhenStatusError: true, connectTimeout: 100 * 1000, receiveTimeout: 60 * 1000);
 
     dio = Dio(options);
-    print(storage['uid']);
     try {
       var data = await dio
           .post(host + ':' + port + '/api/add_booking', data: {'doctor_id': doctor_id, 'date': date, 'user_id': storage['uid']});
-      print(data.data);
       if (data.statusCode == 200 && data.data != '') {
         return true;
       } else {
@@ -24,6 +25,51 @@ class AppointementsServices {
     } catch (error) {
       print(error.toString());
       return false;
+    }
+  }
+
+  static Future<List<Appointement>> get_appointements(String status) async {
+    BaseOptions options =
+        new BaseOptions(receiveDataWhenStatusError: true, connectTimeout: 100 * 1000, receiveTimeout: 60 * 1000);
+
+    dio = Dio(options);
+    try {
+      var data = await dio.get(
+        host + ':' + port + '/api/my_bookings/${storage['uid']}/${status}',
+      );
+      if (data.statusCode == 200 && data.data != '') {
+        Iterable appointmentsJson = data.data['data'];
+        List<Appointement> appointments =
+            appointmentsJson.map((appointmentJson) => Appointement.fromJson(appointmentJson)).toList();
+        return appointments;
+      } else {
+        return [];
+      }
+    } catch (error) {
+      return [];
+    }
+  }
+
+  static Future<String> delete_appointement(int id, VoidCallback function) async {
+    BaseOptions options =
+        new BaseOptions(receiveDataWhenStatusError: true, connectTimeout: 100 * 1000, receiveTimeout: 60 * 1000);
+
+    dio = Dio(options);
+    try {
+      var data = await dio.delete(
+        host + ':' + port + '/api/delete_booking/${id}',
+      );
+      if (data.statusCode == 200 && data.data != '') {
+        function();
+        return data.data['message'];
+      } else {
+        function();
+        return "error";
+      }
+    } catch (error) {
+      function();
+      print(error.toString());
+      return "error";
     }
   }
 }

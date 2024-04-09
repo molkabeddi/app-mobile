@@ -114,29 +114,33 @@ class _BookingPageState extends State<BookingPage> {
           SliverToBoxAdapter(
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 80),
-              child: Button(
-                width: double.infinity,
-                title: 'Make Appointement',
-                onPressed: () async {
-                  setState(() {
-                    _currentDay = _currentDay.subtract(Duration(hours: _currentDay.hour));
-                    _currentDay = _currentDay.add(Duration(hours: _currentIndex! + 9));
+              child: loading
+                  ? Center(
+                      child: CircularProgressIndicator(),
+                    )
+                  : Button(
+                      width: double.infinity,
+                      title: 'Make Appointement',
+                      onPressed: () async {
+                        setState(() {
+                          _currentDay = _currentDay.subtract(Duration(hours: _currentDay.hour));
+                          _currentDay = _currentDay.add(Duration(hours: _currentIndex! + 9));
 
-                    loading = true;
-                  });
-                  print(_currentDay);
-                  var data = await AppointementsServices.add_appointement(
-                      DateFormat("yyyy/MM/dd HH:mm").format(_currentDay), widget.doctor.id);
-                  setState(() {
-                    loading = false;
-                  });
+                          loading = true;
+                        });
+                        print(_currentDay);
+                        var data = await AppointementsServices.add_appointement(
+                            DateFormat("yyyy/MM/dd HH:mm").format(_currentDay), widget.doctor.id);
+                        setState(() {
+                          loading = false;
+                        });
 
-                  if (data) {
-                    Get.to(AppointmentBooked());
-                  } else {}
-                },
-                disable: _timeSelected && _dateSelected ? false : true,
-              ),
+                        if (data) {
+                          Get.to(AppointmentBooked());
+                        } else {}
+                      },
+                      disable: _timeSelected && _dateSelected ? false : true,
+                    ),
             ),
           ),
         ],
