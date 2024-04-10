@@ -3,15 +3,22 @@ import 'package:pfa2/models/snack_bar_types.dart';
 import 'package:pfa2/utils/config.dart';
 
 class SnackBars {
-  final BuildContext context;
   final SnackBarsTypes type;
   final String label;
   final VoidCallback onTap;
   final String actionLabel;
 
-  SnackBars({required this.context, required this.type, required this.label, required this.onTap, required this.actionLabel});
+  late BuildContext _context;
 
-  void showSnackBar() {
+  SnackBars({
+    required this.type,
+    required this.label,
+    required this.onTap,
+    required this.actionLabel,
+  });
+
+  void showSnackBar(BuildContext context) {
+    _context = context; // Save reference to the context
     final snackBar = SnackBar(
       backgroundColor: Colors.red,
       margin: EdgeInsets.all(1),
@@ -21,10 +28,10 @@ class SnackBars {
       ),
       duration: Duration(seconds: 5),
       action: SnackBarAction(
-        label: '${this.actionLabel}',
+        label: actionLabel,
         textColor: Colors.white,
         onPressed: () {
-          ScaffoldMessenger.of(context).hideCurrentSnackBar();
+          ScaffoldMessenger.of(_context).hideCurrentSnackBar();
           onTap();
         },
       ),
@@ -34,12 +41,12 @@ class SnackBars {
           children: [
             Padding(
               padding: EdgeInsets.symmetric(horizontal: Config.screenHeight! * 0.015),
-              child: Text("${this.label}"),
+              child: Text(label),
             )
           ],
         ),
       ),
     );
-    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    ScaffoldMessenger.of(_context).showSnackBar(snackBar);
   }
 }

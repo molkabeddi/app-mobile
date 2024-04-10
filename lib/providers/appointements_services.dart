@@ -5,7 +5,7 @@ import 'package:get_storage/get_storage.dart';
 import 'package:pfa2/models/appointement.dart';
 
 class AppointementsServices {
-  static String host = "http://192.168.74.86";
+  static String host = "http://192.168.110.86";
   static String port = "8000";
   static late Dio dio;
   static var storage = GetStorage().read("user");
@@ -59,6 +59,30 @@ class AppointementsServices {
       var data = await dio.delete(
         host + ':' + port + '/api/delete_booking/${id}',
       );
+      if (data.statusCode == 200 && data.data != '') {
+        function();
+        return data.data['message'];
+      } else {
+        function();
+        return "error";
+      }
+    } catch (error) {
+      function();
+      print(error.toString());
+      return "error";
+    }
+  }
+
+  static Future<String> update_status(int id, VoidCallback function, String status) async {
+    BaseOptions options =
+        new BaseOptions(receiveDataWhenStatusError: true, connectTimeout: 100 * 1000, receiveTimeout: 60 * 1000);
+
+    dio = Dio(options);
+    try {
+      var data = await dio.get(
+        host + ':' + port + '/api/update_status/${id}/${status}',
+      );
+      print(data.data);
       if (data.statusCode == 200 && data.data != '') {
         function();
         return data.data['message'];

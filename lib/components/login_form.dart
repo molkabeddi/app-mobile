@@ -82,12 +82,11 @@ class _LoginFormState extends State<LoginForm> {
                       Navigator.of(context).pushNamed('/main');
                     } else {
                       SnackBars(
-                              label: "Wrong cridentials",
-                              type: SnackBarsTypes.alert,
-                              onTap: () {},
-                              actionLabel: "Close",
-                              context: context)
-                          .showSnackBar();
+                        label: "Wrong cridentials",
+                        type: SnackBarsTypes.alert,
+                        onTap: () {},
+                        actionLabel: "Close",
+                      ).showSnackBar(context);
                       setState(() {
                         loading = false;
                       });

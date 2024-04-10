@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:pfa2/models/appointement.dart';
 import 'package:pfa2/providers/appointements_services.dart';
@@ -85,7 +86,20 @@ class _AppointementCardState extends State<AppointementCard> {
                   children: [
                     Expanded(
                       child: OutlinedButton(
-                        onPressed: () {},
+                        onPressed: () async {
+                          AppointementsServices.update_status(widget.appointement.id, () {
+                            widget.function();
+                          }, "canceled")
+                              .then((value) {
+                            Fluttertoast.showToast(
+                                msg: "$value",
+                                toastLength: Toast.LENGTH_SHORT,
+                                gravity: ToastGravity.BOTTOM,
+                                timeInSecForIosWeb: 1,
+                                textColor: Colors.white,
+                                fontSize: 16.0);
+                          });
+                        },
                         child: const Text(
                           'Cancel',
                           style: TextStyle(color: Config.primaryColor),
@@ -117,7 +131,20 @@ class _AppointementCardState extends State<AppointementCard> {
                     Expanded(
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(backgroundColor: Colors.green),
-                        onPressed: () {},
+                        onPressed: () async {
+                          AppointementsServices.update_status(widget.appointement.id, () {
+                            widget.function();
+                          }, "completed")
+                              .then((value) {
+                            Fluttertoast.showToast(
+                                msg: "$value",
+                                toastLength: Toast.LENGTH_SHORT,
+                                gravity: ToastGravity.BOTTOM,
+                                timeInSecForIosWeb: 1,
+                                textColor: Colors.white,
+                                fontSize: 16.0);
+                          });
+                        },
                         child: const Text(
                           'Complete',
                           style: TextStyle(color: Colors.white),
@@ -134,6 +161,14 @@ class _AppointementCardState extends State<AppointementCard> {
                       onPressed: () async {
                         AppointementsServices.delete_appointement(widget.appointement.id, () {
                           widget.function();
+                        }).then((value) {
+                          Fluttertoast.showToast(
+                              msg: "$value",
+                              toastLength: Toast.LENGTH_SHORT,
+                              gravity: ToastGravity.BOTTOM,
+                              timeInSecForIosWeb: 1,
+                              textColor: Colors.white,
+                              fontSize: 16.0);
                         });
                       },
                       child: const Text(

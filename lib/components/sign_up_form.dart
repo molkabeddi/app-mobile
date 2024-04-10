@@ -96,12 +96,11 @@ class _SignUpFormState extends State<SignUpForm> {
                       Navigator.of(context).pushNamed('/main');
                     } else {
                       SnackBars(
-                              label: "Email already exists",
-                              type: SnackBarsTypes.alert,
-                              onTap: () {},
-                              actionLabel: "Close",
-                              context: context)
-                          .showSnackBar();
+                        label: "Email already exists",
+                        type: SnackBarsTypes.alert,
+                        onTap: () {},
+                        actionLabel: "Close",
+                      ).showSnackBar(context);
                     }
                     setState(() {
                       loading = false;

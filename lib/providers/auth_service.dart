@@ -4,7 +4,7 @@ import 'package:get_storage/get_storage.dart';
 import 'package:pfa2/models/user.dart';
 
 class AuthServices {
-  String host = "http://192.168.74.86";
+  String host = "http://192.168.110.86";
   String port = "8000";
   late Dio dio;
   var storage = GetStorage();
@@ -37,7 +37,7 @@ class AuthServices {
     try {
       var data =
           await dio.post(host + ':' + port + '/api/register', data: {'name': username, 'email': email, 'password': password});
-     print(data.data);
+      print(data.data);
       if (data.statusCode == 200 && data.data != '') {
         User user = User.fromJson(data.data['user']);
         saveUserLocally(user);
