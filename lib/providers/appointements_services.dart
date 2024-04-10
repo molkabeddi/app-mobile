@@ -28,6 +28,24 @@ class AppointementsServices {
     }
   }
 
+  static Future<bool> update_appointement(int id, String date) async {
+    BaseOptions options =
+        new BaseOptions(receiveDataWhenStatusError: true, connectTimeout: 100 * 1000, receiveTimeout: 60 * 1000);
+
+    dio = Dio(options);
+    try {
+      var data = await dio.put(host + ':' + port + '/api/update_booking/${id}', data: {'date': date});
+      if (data.statusCode == 200 && data.data != '') {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (error) {
+      print(error.toString());
+      return false;
+    }
+  }
+
   static Future<List<Appointement>> get_appointements(String status) async {
     BaseOptions options =
         new BaseOptions(receiveDataWhenStatusError: true, connectTimeout: 100 * 1000, receiveTimeout: 60 * 1000);

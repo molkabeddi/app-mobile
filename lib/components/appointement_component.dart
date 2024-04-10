@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:pfa2/models/appointement.dart';
 import 'package:pfa2/providers/appointements_services.dart';
+import 'package:pfa2/screens/edit_appointement.dart';
 
 import '../utils/config.dart';
 
@@ -114,7 +116,11 @@ class _AppointementCardState extends State<AppointementCard> {
                         style: OutlinedButton.styleFrom(
                           backgroundColor: Config.primaryColor,
                         ),
-                        onPressed: () {},
+                        onPressed: () {
+                          Get.to(EditAppointement(
+                            appointement: widget.appointement,
+                          ));
+                        },
                         child: const Text(
                           'Reschedule',
                           style: TextStyle(color: Colors.white),

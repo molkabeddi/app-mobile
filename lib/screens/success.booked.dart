@@ -3,7 +3,8 @@ import 'package:lottie/lottie.dart';
 import 'package:pfa2/components/button.dart';
 
 class AppointmentBooked extends StatelessWidget {
-  const AppointmentBooked({Key? key}) : super(key: key);
+  final String status;
+  const AppointmentBooked({Key? key, required this.status}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -19,8 +20,8 @@ class AppointmentBooked extends StatelessWidget {
             Container(
               width: double.infinity,
               alignment: Alignment.center,
-              child: const Text(
-                'Successfully Booked',
+              child: Text(
+                status == "creation" ? 'Successfully Booked' : "Successfully updated",
                 style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,

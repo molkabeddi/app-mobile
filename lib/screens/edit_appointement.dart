@@ -1,36 +1,36 @@
 import 'package:flutter/material.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:get/get_navigation/get_navigation.dart';
+import 'package:get/get.dart';
 import 'package:intl/intl.dart';
-import 'package:pfa2/components/button.dart'; // Ajoutez l'import pour le composant Button si nécessaire
+import 'package:pfa2/components/button.dart';
 import 'package:pfa2/components/custom_appbar.dart';
-import 'package:pfa2/models/doctor.dart';
+import 'package:pfa2/models/appointement.dart';
 import 'package:pfa2/providers/appointements_services.dart';
 import 'package:pfa2/screens/success.booked.dart';
 import 'package:table_calendar/table_calendar.dart';
 
-class BookingPage extends StatefulWidget {
-  final Doctor doctor;
-  const BookingPage({Key? key, required this.doctor}) : super(key: key);
+class EditAppointement extends StatefulWidget {
+  final Appointement appointement;
+  const EditAppointement({Key? key, required this.appointement}) : super(key: key);
 
   @override
-  State<BookingPage> createState() => _BookingPageState();
+  State<EditAppointement> createState() => _EditAppointementState();
 }
 
-class _BookingPageState extends State<BookingPage> {
+class _EditAppointementState extends State<EditAppointement> {
   bool loading = false;
-  // Déclaration des variables
-  CalendarFormat _format = CalendarFormat.month;
-  DateTime _currentDay = DateTime.now();
 
-  DateTime test = DateTime.now();
+  CalendarFormat _format = CalendarFormat.month;
+  late DateTime _currentDay;
   int? _currentIndex;
   bool _isWeekend = false;
-  bool _dateSelected = true;
+  bool _dateSelected = false;
   bool _timeSelected = false;
-  setData() {
+  getDay() {
     setState(() {
-      _currentDay = DateTime(_currentDay.year, _currentDay.month, _currentDay.day);
+      _currentDay = widget.appointement.date;
+      _currentIndex = widget.appointement.date.hour - 9;
+      _dateSelected = true;
+      _timeSelected = true;
     });
   }
 
@@ -38,7 +38,7 @@ class _BookingPageState extends State<BookingPage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    setData();
+    getDay();
   }
 
   @override
@@ -132,25 +132,23 @@ class _BookingPageState extends State<BookingPage> {
                     )
                   : Button(
                       width: double.infinity,
-                      title: 'Make Appointement',
+                      title: 'Update Appointement',
                       onPressed: () async {
                         setState(() {
-                          _currentDay = _currentDay.subtract(Duration(hours: _currentDay.hour));
                           _currentDay = _currentDay.subtract(Duration(hours: _currentDay.hour));
                           _currentDay = _currentDay.add(Duration(hours: _currentIndex! + 9));
 
                           loading = true;
                         });
-                        print(_currentDay);
-                        var data = await AppointementsServices.add_appointement(
-                            DateFormat("yyyy/MM/dd HH:mm").format(_currentDay), widget.doctor.id);
+                        var data = await AppointementsServices.update_appointement(
+                            widget.appointement.id, DateFormat("yyyy/MM/dd HH:mm").format(_currentDay));
                         setState(() {
                           loading = false;
                         });
 
                         if (data) {
                           Get.to(AppointmentBooked(
-                            status: "creation",
+                            status: "updated",
                           ));
                         } else {}
                       },
