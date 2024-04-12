@@ -5,7 +5,7 @@ import 'package:get_storage/get_storage.dart';
 import 'package:pfa2/models/appointement.dart';
 
 class AppointementsServices {
-  static String host = "http://192.168.110.86";
+  static String host = "http://192.168.171.86";
   static String port = "8000";
   static late Dio dio;
   static var storage = GetStorage().read("user");

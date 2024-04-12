@@ -69,7 +69,7 @@ class _AppointmentpageState extends State<Appointmentpage> with TickerProviderSt
                         child: Text(
                           "Upcoming",
                           style: TextStyle(
-                            fontSize: Config.screenHeight! * 0.02,
+                            fontSize: Config.screenHeight! * 0.015,
                           ),
                         ),
                       ),
@@ -84,7 +84,7 @@ class _AppointmentpageState extends State<Appointmentpage> with TickerProviderSt
                         child: Text(
                           "Completed",
                           style: TextStyle(
-                            fontSize: Config.screenHeight! * 0.02,
+                            fontSize: Config.screenHeight! * 0.015,
                           ),
                         ),
                       ),
@@ -99,7 +99,7 @@ class _AppointmentpageState extends State<Appointmentpage> with TickerProviderSt
                         child: Text(
                           "Canceled",
                           style: TextStyle(
-                            fontSize: Config.screenHeight! * 0.02,
+                            fontSize: Config.screenHeight! * 0.015,
                           ),
                         ),
                       ),
